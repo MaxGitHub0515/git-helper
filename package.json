@@ -1,0 +1,24 @@
+{
+  "name": "git-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxGitHub0515/git-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxGitHub0515/git-helper/issues"
+  },
+  "homepage": "https://github.com/MaxGitHub0515/git-helper#readme",
+  "dependencies": {
+    "commander": "^14.0.1",
+    "simple-git": "^3.28.0"
+  }
+}
