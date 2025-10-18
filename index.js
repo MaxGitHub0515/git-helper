@@ -22,58 +22,28 @@ const defPath = process.cwd();
 
 const program = new Command();
 const git = simpleGit();
+const prompt = inquirer.prompt;
 
-// Dynamic path
-// const repoPath = path.resolve(__dirname, '../..');
-// const setPath = ?
 
-console.log(`Current project directory: ${__dirname.blue}`);
 
-const gitHelper = async (msg, defaultRemoteRepo = "origin") => {
+console.log(`Current project directory: ${defPath.yellow}`);
+
+export const gitHelper = async (msg, defaultRemoteRepo = "origin") => {
     try {
-        const answers = await askUser();
+        const currentBranch = (await git.branch()).current;
+        const answers = await askUser(git, prompt, currentBranch);
         const { action, dir, targetBranch } = answers;
         // Detect current branch automatically
-        const currentBranch = (await git.branch()).current;
         const branch = targetBranch || currentBranch;
-    // Push all changes locally
-       const pushAll = async () => {
-       const branchExists = (await git.branch()).current
-        if (!branchExists) new Error(`Branch ${branchN} does not exist`);
-        await git.add(defPath);
-        try {
-        await git.commit(msg);
-        } catch (error) {
-            console.log('No changes to commit'.yellow);
-        }
-        await git.push(defaultRemoteRepo, branchN);
-        console.log(`Pushed changes to ${branchN}`);
-       };
-        await pushAll();
-
-       // Adding current repo and committing all changes in it 
-       
-       const commit = async () => {
-
-         const commitAll = async () => {
-            await git.add(defPath);
-            await git.commit(msg)
-        }
-       }
+    
       
       
-
-       
-        
-        
     } catch (error) {
         console.error('❌ Git operation failed:', error.message);
     }
 }
 
 gitHelper(
-    'random',
-    'test commit from script',
 
 )
 
@@ -89,4 +59,4 @@ gitHelper(
 
 // Issues on the way - 
 // 1. Adjust the path for shebang
-
+// 2. Would be nice to add auto-commit with openai, and manual option too
