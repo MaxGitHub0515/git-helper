@@ -9,9 +9,7 @@ export const pushAllChanges = async ({git, defaultRemoteRepo, branch, commitMsg,
         if(!allBranches.includes(branch)) throw new Error(`Branch ${branch} does not exist.`);
         try {
         if(pendingChanges) {
-            await git.add(targetPath);
-            await git.commit(commitMsg);
-            console.log(`Committed changes to ${branch} in directory ${targetPath.yellow}`.green);
+           await commitChanges({git, commitMsg, targetPath, branch});
         } else {
             console.log('No changes detected — skipping commit'.yellow);
         }
