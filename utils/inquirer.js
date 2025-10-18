@@ -27,7 +27,7 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
         {
             type: 'input',
             name: 'commitMsg',
-            when: (answers) => ['commit_changes'].includes(answers.action),
+            when: (answers) => ['commit_changes', 'push'].includes(answers.action),
             message: 'Enter commit message manually or use auto-githelper commit message:',
             default: suggestedMsgAI
 

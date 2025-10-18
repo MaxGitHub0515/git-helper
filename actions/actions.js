@@ -4,17 +4,22 @@
 export const pushAllChanges = async ({git, defaultRemoteRepo, branch, commitMsg, targetPath}) => {
         // Validate branch
         const allBranches = (await git.branch()).all;
+        const status = await git.status();
+        const pendingChanges = status.files.length > 0;
         if(!allBranches.includes(branch)) throw new Error(`Branch ${branch} does not exist.`);
-        await git.add(targetPath);
         try {
-        await git.commit(commitMsg);
-        } catch (error) {
-            console.log('No changes to commit'.yellow, error.message);
-            
-            return;        
+        if(pendingChanges) {
+            await git.add(targetPath);
+            await git.commit(commitMsg);
+            console.log(`Committed changes to ${branch} in directory ${targetPath.yellow}`.green);
+        } else {
+            console.log('No changes detected — skipping commit'.yellow);
         }
         await git.push(defaultRemoteRepo, branch);
         console.log(`Pushed changes to ${branch}`);
+        } catch (error) {
+            console.log('No changes to commit'.yellow, error.message);       
+        }
        };
 
 export const commitChanges = async ({git, commitMsg, targetPath, branch}) => {
