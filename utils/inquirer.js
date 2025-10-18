@@ -7,8 +7,7 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
             message: 'Choose an action:',
             choices: [
                {name: 'Push all changes', value: 'push'},
-               {name: "Commit all changes to current directory", value: "commit_current"},
-               {name: "Commit all changes to a specific directory", value: "commit_specific"},
+               {name: "Commit changes to a directory", value: "commit_changes"},
                {name: 'See all branches', value: 'see_branches'},
                {name: 'Create and switch to a new branch', value: 'create_branch_switch'},
                {name: 'Switch to an existing branch safely', value: 'switch_branch'},
@@ -17,9 +16,9 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
         {
             type: 'input',
             name: 'dir',
-            message: 'Enter the directory to commit (relative to repo root):',
+            message: 'Enter the directory to commit (relative to repo root) or press Enter to use :',
             default: '.',
-            when: (answers) => answers.action === 'commit_specific',
+            when: (answers) => answers.action === 'commit_changes',
             validate: (input) => input.trim() !== '' || 'Directory cannot be empty', 
             filter: (input) => input.replace(/\\/g, '/') // to normalize path
 
@@ -28,7 +27,7 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
         {
             type: 'input',
             name: 'commitMsg',
-            when: (answers) => answers.action === 'see_branches',
+            when: (answers) => ['commit_changes'].includes(answers.action),
             message: 'Enter commit message manually or use auto-githelper commit message:',
             default: suggestedMsgAI
 
@@ -36,7 +35,8 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
         {
             type: 'input',
             name: 'targetBranch',
-            message: 'Enter branch name:',
+            message: 'Enter the name of a branch:',
+            when: (answers) => ['push', 'create_branch_switch', 'switch_branch'].includes(answers.action),
             default: currentBranch,
 
         }

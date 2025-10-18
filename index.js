@@ -13,6 +13,7 @@ import "colors";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { askUser } from './utils/inquirer.js';
+import {actionsMap} from './actions/actionsMap.js';
 // full URL of the current module file
 const __filename = fileURLToPath(import.meta.url);
 // getting absolute path of the dir containing this file.
@@ -35,18 +36,17 @@ export const gitHelper = async (msg, defaultRemoteRepo = "origin") => {
         const { action, dir, targetBranch } = answers;
         // Detect current branch automatically
         const branch = targetBranch || currentBranch;
-    
-      
-      
+        const targetPath = action === "commit_changes" ? path.resolve(defPath, dir) : defPath;
+        // selecting action to execute
+        const selectedAction = actionsMap[action];
+        if(!selectedAction) throw new Error(`⚠️ Unknown action: ${action}`);
+        await selectedAction({git, branch, msg, defaultRemoteRepo, targetPath})
     } catch (error) {
         console.error('❌ Git operation failed:', error.message);
     }
 }
 
-gitHelper(
-
-)
-
+gitHelper();
 // pushAll
 // 
 

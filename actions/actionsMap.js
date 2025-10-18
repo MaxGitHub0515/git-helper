@@ -1,12 +1,10 @@
 
-import {gitHelper} from './index.js';
+import * as actions from './actions.js';
 
-export const {
-    pushAll, showAllBranches
-} = gitHelper;
-const actionsMap = {
-    'push': actions.pushAll,
-    'seeBranches': actions.showAllBranches,
-
-
+export const actionsMap = {
+    'push': actions.pushAllChanges,
+    'commit_changes': actions.commitChanges,
+    'see_branches': actions.showAllBranches,
+    'create_branch_switch': actions.createBranchAndSwitch,
+    'switch_branch': actions.switchBranchSafely
 }
