@@ -29,18 +29,18 @@ const prompt = inquirer.prompt;
 
 console.log(`Current project directory: ${defPath.yellow}`);
 
-export const gitHelper = async (msg, defaultRemoteRepo = "origin") => {
+export const gitHelper = async (defaultRemoteRepo = "origin") => {
     try {
         const currentBranch = (await git.branch()).current;
         const answers = await askUser(git, prompt, currentBranch);
-        const { action, dir, targetBranch } = answers;
+        const { action, dir, targetBranch, commitMsg} = answers;
         // Detect current branch automatically
         const branch = targetBranch || currentBranch;
         const targetPath = action === "commit_changes" ? path.resolve(defPath, dir) : defPath;
         // selecting action to execute
         const selectedAction = actionsMap[action];
         if(!selectedAction) throw new Error(`⚠️ Unknown action: ${action}`);
-        await selectedAction({git, branch, msg, defaultRemoteRepo, targetPath})
+        await selectedAction({git, branch, commitMsg, defaultRemoteRepo, targetPath})
     } catch (error) {
         console.error('❌ Git operation failed:', error.message);
     }
