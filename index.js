@@ -8,12 +8,15 @@ import inquirer from 'inquirer';
 import path from 'path';
 import process from 'process';
 import "colors";
+import dotenv from 'dotenv';
+dotenv.config();
 // Path Control 
 // __dirname is not available in es modules, so derive it
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { askUser } from './utils/inquirer.js';
 import {actionsMap} from './actions/actionsMap.js';
+import {generateAICommitMessage} from './utils/commitHelper.js';
 // full URL of the current module file
 const __filename = fileURLToPath(import.meta.url);
 // getting absolute path of the dir containing this file.
@@ -32,7 +35,8 @@ console.log(`Current project directory: ${defPath.yellow}`);
 export const gitHelper = async (defaultRemoteRepo = "origin") => {
     try {
         const currentBranch = (await git.branch()).current;
-        const answers = await askUser(git, prompt, currentBranch);
+        const {suggestedMsgAI} = await generateAICommitMessage({git})
+        const answers = await askUser(git, prompt, currentBranch, suggestedMsgAI);
         const { action, dir, targetBranch, commitMsg} = answers;
         // Detect current branch automatically
         const branch = targetBranch || currentBranch;

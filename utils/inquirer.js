@@ -16,7 +16,7 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
         {
             type: 'input',
             name: 'dir',
-            message: 'Enter the directory to commit (relative to repo root) or press Enter to use default:',
+            message: 'Enter the directory to commit (relative to repo root) or press Enter to use current project directory:',
             default: '.',
             when: (answers) => answers.action === 'commit_changes',
             validate: (input) => input.trim() !== '' || 'Directory cannot be empty', 

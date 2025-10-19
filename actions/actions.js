@@ -1,5 +1,4 @@
 
-
 // Push all changes locally
 export const pushAllChanges = async ({git, defaultRemoteRepo, branch, commitMsg, targetPath}) => {
         // Validate branch
@@ -45,3 +44,4 @@ export const switchBranchSafely = async ({git, branch}) => {
     await git.checkout(branch);
     console.log(`✅ Switched to branch ${branch}`);
 }
+
