@@ -6,5 +6,7 @@ export const actionsMap = {
     'commit_changes': actions.commitChanges,
     'see_branches': actions.showAllBranches,
     'create_branch_switch': actions.createBranchAndSwitch,
-    'switch_branch': actions.switchBranchSafely
+    'switch_branch': actions.switchBranchSafely,
+    'amend_commit': actions.amendCommit,
+    'undo_soft_commit': actions.undoLocalSoftCommit
 }

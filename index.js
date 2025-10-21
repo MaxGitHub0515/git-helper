@@ -35,9 +35,13 @@ console.log(`Current project directory: ${defPath.yellow}`);
 export const gitHelper = async (defaultRemoteRepo = "origin") => {
     try {
         const currentBranch = (await git.branch()).current;
-        const {suggestedMsgAI} = await generateAICommitMessage({git})
+        const {suggestedMsgAI} = await generateAICommitMessage({git});
         const answers = await askUser(git, prompt, currentBranch, suggestedMsgAI);
-        const { action, dir, targetBranch, commitMsg} = answers;
+        const { action, dir, targetBranch, commitMsg, confirmStatus} = answers;
+        if(!confirmStatus) {
+            console.log('❌ Action cancelled by user.'.yellow);
+            return;
+        }
         // Detect current branch automatically
         const branch = targetBranch || currentBranch;
         const targetPath = action === "commit_changes" ? path.resolve(defPath, dir) : defPath;

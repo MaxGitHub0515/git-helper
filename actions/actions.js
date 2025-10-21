@@ -31,7 +31,7 @@ export const commitChanges = async ({git, commitMsg, targetPath, branch}) => {
     
 export const showAllBranches = async ({git}) => {
         const allBranches = (await git.branch()).all;
-        console.log('Branches in the repository:'.yellow);
+        console.log(`Branches in the repository: $`.yellow);
         allBranches.forEach(b => console.log(`- ${b}`.green));
 }
 
@@ -45,3 +45,19 @@ export const switchBranchSafely = async ({git, branch}) => {
     console.log(`✅ Switched to branch ${branch}`);
 }
 
+export const amendCommit = async ({git, commitMsg}) =>  {
+    await git.commit(commitMsg, [],  {'--amend': null});
+    console.log(`✅ Amended last commit with new message: "${commitMsg}"`);
+
+}
+
+export const undoLocalSoftCommit = async ({git}) => {
+    await git.reset(['--soft', 'HEAD~1']);
+    console.log('✅ Last commit undone, changes are still staged.');
+
+}
+
+export const undoLocalHardCommit = async ({git}) => {
+    await git.reset(['--hard', 'HEAD~1']);
+    console.log('✅ Last commit undone, changes are lost.');
+}
