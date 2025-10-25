@@ -1,5 +1,5 @@
 
-export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
+export const askUser = async (git, prompt, currentBranch, suggestedMsgAI, risky) => {
   return prompt([
         {
             type: 'list',
@@ -16,7 +16,7 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
                {name: 'Uncommit the last commit (hard reset)', value:'undo_hard_commit'}
             ]
         },
-        {
+        { 
             type: 'input',
             name: 'dir',
             message: 'Enter the directory to commit (relative to repo root) or press Enter to use current project directory:',
@@ -24,6 +24,7 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
             when: (answers) => answers.action === 'commit_changes',
             validate: (input) => input.trim() !== '' || 'Directory cannot be empty', 
             filter: (input) => input.replace(/\\/g, '/') // to normalize path
+
 
 
         },
@@ -47,8 +48,8 @@ export const askUser = async (git, prompt, currentBranch, suggestedMsgAI) => {
             type: 'confirm',
             name: 'confirmStatus',
             message: 'Are your sure you want to proceed with this action?',
-            when: (answers) => ['undo_soft_commit', 'undo_hard_commit', 'push', 'commit_changes'].includes(answers.action),
-            default: true
+            when: (answers) => ['undo_soft_commit', 'undo_hard_commit', 'push', 'commit_changes', 'see_branches'].includes(answers.action),
+            default: risky
         }
 ])
 }

@@ -38,8 +38,10 @@ export const gitHelper = async (defaultRemoteRepo = "origin") => {
         const {suggestedMsgAI} = await generateAICommitMessage({git});
         const answers = await askUser(git, prompt, currentBranch, suggestedMsgAI);
         const { action, dir, targetBranch, commitMsg, confirmStatus} = answers;
-        if(!confirmStatus) {
-            console.log('❌ Action cancelled by user.'.yellow);
+        if(confirmStatus) {
+            console.log(`✅ Action confirmed: ${action}`);
+        } else {
+            console.log('❌ Action cancelled by user.');
             return;
         }
         // Detect current branch automatically
